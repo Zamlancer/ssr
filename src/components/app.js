@@ -1,35 +1,23 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { fetchAppsIfNeeded } from '../redux/actions'
+import React, { useEffect, useState } from 'react'
 
-import Card from './card'
-class App extends Component {
+export default function app() {
+  const [loading, setLoading] = useState(true);
 
-  componentDidMount() {
-    const { dispatch } = this.props
-    dispatch(fetchAppsIfNeeded())
-  }
+  useEffect(() => {
+    if(loading){
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000)
+    }
+  }, [loading]);
 
+  return (
+    <div>
 
-  render() {
-    const { isFetching, apps } = this.props
-    const totalapps = apps.length;
+      {
+        loading ? <h1>Loading ...</h1> : <h1>Loaded</h1>
+      }
 
-    return (
-       <>
-         {isFetching && totalapps === 0 && <h2>Loading...</h2>}
-         {!isFetching && totalapps === 0 && <h2>Empty.</h2>}
-         <Card apps={apps} totalapps={totalapps} />
-       </>
-    );
-  }
+    </div>
+  )
 }
- 
-function mapStateToProps({ isFetching, apps }) {
-  return {
-    isFetching,
-    apps
-  }
-}
- 
-export default connect(mapStateToProps)(App)
